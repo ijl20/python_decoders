@@ -13,6 +13,15 @@ In part we are compensating for limitations in the TTN (The Things Network) deco
 'application' is limited to a single Javascript 'decode' function which becomes unwieldy when multiple sensor types are
 to be supported.
 
+## Install
+
+```
+git clone https://github.com/ijl20/python_decoders
+cd python_decoders
+pip -m venv venv
+pip install -r requirements.txt
+```
+
 ## Typical use case
 
 When LoraWAN sensor data arrives that the TTN network server (The Things Network), TTN will package the sensor data
