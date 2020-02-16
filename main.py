@@ -2,7 +2,7 @@
 import importlib
 
 
-def load_plugin(decoder_name):
+def load_decoder(decoder_name):
     return importlib.import_module('decoders.'+decoder_name)
 
 import paho.mqtt.client as mqtt
@@ -13,15 +13,26 @@ def on_connect(client, userdata, flags, rc):
 
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
-    client.subscribe("$SYS/#")
+    client.subscribe("csn/#")
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
-    print(msg.topic+" "+str(msg.payload))
+    print("Rcvd: {} {} ".format(msg.topic,str(msg.payload)))
+
+    for decoder in decoders:
+        if decoder.test(msg.payload):
+            decoded = decoder.decode(msg.payload)
+            print("Decoded: {}".format(decoded))
+            break
+
 
 if __name__ == '__main__':
-    plugin1 = load_plugin('plugin1')
+    plugin1 = load_decoder('plugin1')
     plugin1.main()
+
+    elsys = load_decoder('elsys')
+
+    decoders = [ elsys.Decoder() ]
 
     client = mqtt.Client()
     client.on_connect = on_connect
