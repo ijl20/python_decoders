@@ -37,7 +37,7 @@ if __name__ == '__main__':
     client = mqtt.Client()
     client.on_connect = on_connect
     client.on_message = on_message
-
+    client.username_pw_set('csn-node-test','csn-node-test')
     client.connect("localhost", 1883, 60)
 
 # Blocking call that processes network traffic, dispatches callbacks and
